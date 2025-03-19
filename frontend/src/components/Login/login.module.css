@@ -52,6 +52,10 @@
     border: none;
     border-bottom: 1px solid #ccc;
   }
+
+  .inputContainer {
+    position: relative;
+  }
   
   .loginForm button {
     padding: 0.75rem;
@@ -67,7 +71,7 @@
   .inputIcon {
     position: absolute;
     margin-top: 30px;
-    right: 130px;
+    right: 12px;
     background: none;
     border: none;
     color: #9d9d9d !important;
@@ -76,7 +80,9 @@
 
   .passwordToggle {
     position: absolute;
-    right: 120px;
+    top: 2.6px;
+    right: 2px;
+    height: 1px;
     background: none;
     border: none;
     cursor: pointer;
