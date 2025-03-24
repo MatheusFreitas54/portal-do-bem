@@ -1,0 +1,112 @@
+.loginContainer {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .backgroundImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+  
+  .loginCard {
+    position: relative;
+    width: 42vw;
+    min-width: 320px;
+    height: 100vh;
+    background: rgba(245, 245, 245, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    z-index: 1;
+  }
+  
+  .logo {
+    width: 150px;
+    margin-bottom: 3rem;
+  }
+  
+  .loginForm {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .loginForm input {
+    padding: 0.5rem;
+    margin-top: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 30px;
+    width: 250px;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #000;
+    border: none;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .inputContainer {
+    position: relative;
+  }
+  
+  .loginForm button {
+    padding: 0.75rem;
+    background-color: #354545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+
+  .inputIcon {
+    position: absolute;
+    margin-top: 30px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: #9d9d9d !important;
+    background-color: #fff !important;
+  }
+
+  .passwordToggle {
+    position: absolute;
+    top: 2.6px;
+    right: 2px;
+    height: 1px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #9d9d9d !important;
+    background-color: #fff !important;
+  }
+  
+  .loginForm button:hover {
+    background-color: #587373;
+  }
+  
+  .registerLink {
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    color: #000;
+  }
+  
+  .registerLink a {
+    color: #4685c5;
+    text-decoration: none;
+  }
+  
+  .registerLink a:hover {
+    text-decoration: underline;
+  }
+  
