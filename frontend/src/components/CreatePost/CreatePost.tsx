@@ -1,4 +1,5 @@
-import React, { FormEvent, ChangeEvent } from "react";
+// import React, { FormEvent, ChangeEvent } from "react";
+import React, { FormEvent } from "react";
 import styles from "./CreatePost.module.css";
 
 interface CreatePostFormProps {
@@ -23,12 +24,13 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
     onSubmit({
       title: formData.get("title") as string,
       type: formData.get("type") as string,
-      banner: (formData.get("banner") as FileList)?.[0] || null,
+      banner: (formData.get("banner") as unknown as FileList)?.[0] || null,
       description: formData.get("description") as string,
     });
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  // const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = () => {
     //processar img
   };
 
