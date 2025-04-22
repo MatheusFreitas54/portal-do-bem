@@ -6,9 +6,11 @@ Plataforma web que centraliza ações sociais — adoção de animais, projetos 
 
 ```
 .
+├── README.md
 ├── backend
     ├── .example.env
     ├── .gitignore
+    ├── Dockerfile.back
     ├── auth.py
     ├── config.py
     ├── main.py
@@ -30,8 +32,10 @@ Plataforma web que centraliza ações sociais — adoção de animais, projetos 
     │   ├── auth.py
     │   ├── post.py
     │   └── user.py
+├── docker-compose.yml
 └── frontend
     ├── .gitignore
+    ├── Dockerfile.front
     ├── README.md
     ├── eslint.config.js
     ├── index.html
@@ -73,6 +77,8 @@ Plataforma web que centraliza ações sociais — adoção de animais, projetos 
         │   │   └── NavBar.tsx
         ├── index.css
         ├── main.tsx
+        ├── types
+        │   └── Event.ts
         └── vite-env.d.ts
     ├── tsconfig.app.json
     ├── tsconfig.json
