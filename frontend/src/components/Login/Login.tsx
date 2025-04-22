@@ -1,4 +1,5 @@
 import React, { useState, FormEvent } from "react";
+import { useNavigate, Link } from "react-router-dom"; // Importa useNavigate e Link para navegação
 import styles from "./Login.module.css";
 import logo from "../../assets/logo.png";
 import volunteers from "../../assets/background.png";
@@ -8,6 +9,7 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -16,6 +18,12 @@ const Login: React.FC = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Email:", email, "Senha:", password);
+
+    if (email === "teste@email.com" && password === "123456") {
+      navigate("/home");
+    } else {
+      alert("Credenciais inválidas!");
+    }
   };
 
   return (
@@ -60,7 +68,7 @@ const Login: React.FC = () => {
           </div>
 
           <p className={styles.registerLink}>
-            Não possui conta? <a href="/register">Cadastre-se</a>
+            Não possui conta? <Link to="/register">Cadastre-se</Link>
           </p>
 
           <button type="submit">ENTRAR</button>
