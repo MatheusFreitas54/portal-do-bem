@@ -1,4 +1,5 @@
-import React, { FormEvent, ChangeEvent } from "react";
+// import React, { FormEvent, ChangeEvent } from "react";
+import React, { FormEvent } from "react";
 import styles from "./CreatePost.module.css";
 
 interface CreatePostFormProps {

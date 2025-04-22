@@ -77,8 +77,6 @@ Plataforma web que centraliza ações sociais — adoção de animais, projetos 
         │   │   └── NavBar.tsx
         ├── index.css
         ├── main.tsx
-        ├── types
-        │   └── Event.ts
         └── vite-env.d.ts
     ├── tsconfig.app.json
     ├── tsconfig.json
