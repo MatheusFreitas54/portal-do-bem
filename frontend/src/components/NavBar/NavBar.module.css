@@ -1,0 +1,57 @@
+.navBar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #3D4953;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+  z-index: 1000;
+}
+
+.leftSection {
+  flex: 1;
+}
+
+.searchForm {
+  display: flex;
+  align-items: center;
+}
+
+.searchInput {
+  padding: 6px 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  width: 600px;
+}
+
+.rightSection {
+  display: flex;
+  align-items: center;
+}
+
+.newPostButton {
+  margin-right: 15px;
+  padding: 6px 12px;
+  font-size: 1rem;
+  background-color: #c7faff;
+  color: #000000;
+  border: none;
+  border-radius: 18px;
+  cursor: pointer;
+}
+
+.newPostButton:hover {
+  background-color: #93D7E6;
+}
+
+.userIcon {
+  font-size: 2rem;
+  cursor: pointer;
+  color: #ffffff;
+  margin-right: 2rem;
+}
