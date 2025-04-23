@@ -1,5 +1,5 @@
 import React from "react";
-import EventCard, { Event } from "../EventCard/EventCard";
+import EventCard, { Event } from "../EventCard/EventCard";  
 import styles from "./EventList.module.css";
 
 interface Props {
@@ -14,4 +14,5 @@ const EventList: React.FC<Props> = ({ events }) => (
   </div>
 );
 
+export const EventListComponent = EventList;
 export default EventList;
