@@ -20,16 +20,19 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
     const target = e.currentTarget;
     const formData = new FormData(target);
 
+    const rawBanner = formData.get("banner");
+    const bannerFile = rawBanner instanceof File ? rawBanner : null;
+  
     onSubmit({
       title: formData.get("title") as string,
       type: formData.get("type") as string,
-      banner: (formData.get("banner") as FileList)?.[0] || null,
+      banner: bannerFile,
       description: formData.get("description") as string,
     });
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    //processar img
+    console.log(e)
   };
 
   return (
