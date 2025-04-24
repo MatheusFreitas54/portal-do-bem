@@ -1,11 +1,6 @@
-<<<<<<< HEAD
 import React, { FormEvent, ChangeEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-=======
-// import React, { FormEvent, ChangeEvent } from "react";
-import React, { FormEvent } from "react";
->>>>>>> bcdccb311b2915a48365068002396b6bded25036
 import styles from "./CreatePost.module.css";
 
 interface CreatePostProps {
