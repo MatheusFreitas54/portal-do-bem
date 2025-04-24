@@ -1,9 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Dashboard.module.css";
 import user from "../../assets/user.png";
 import EventCard, { Event } from "../EventCard/EventCard";
 import CreatePostForm from "../CreatePost/CreatePost";
+import axios from "axios";
+
+const API_URL = "http://localhost:8000/api";
 
 const mockPosts: Event[] = [
   {
@@ -36,7 +39,8 @@ const mockPosts: Event[] = [
   {
     id: "104",
     title: "Mutirão de Limpeza",
-    image: "https://guiadoestudante.abril.com.br/wp-content/uploads/sites/4/2024/02/mutirao.jpg?quality=70&strip=info&w=1024",
+    image:
+      "https://guiadoestudante.abril.com.br/wp-content/uploads/sites/4/2024/02/mutirao.jpg?quality=70&strip=info&w=1024",
     dateStart: "10 Abr",
     location: "Curitiba / PR",
     organizer: "Verde Curitiba",
@@ -61,32 +65,61 @@ const mockPosts: Event[] = [
 
 const Dashboard: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
+  const [userInfo, setUserInfo] = useState<{ username: string; email: string }>(
+    {
+      username: "",
+      email: "",
+    }
+  );
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios
+        .get(`${API_URL}/users/me/`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => {
+          const { username, email } = res.data;
+          setUserInfo({ username, email });
+        })
+        .catch((err) => {
+          console.error("Erro ao buscar usuário:", err);
+        });
+    }
+  }, []);
 
   const handlePostSubmit = (data: any) => {
     console.log("Post criado:", data);
     setShowForm(false);
   };
 
-  const handlePostCancel = () => {
-    setShowForm(false);
-  };
-
+  const handlePostCancel = () => setShowForm(false);
   const handleBackHome = () => navigate("/home");
 
   return (
     <div className={styles.container}>
       <div className={styles.dashboard}>
-      <button onClick={handleBackHome} className={styles.backButton}>
+        <button onClick={handleBackHome} className={styles.backButton}>
           ← Voltar à Home
         </button>
-        
+
         <div className={styles.header}>
-          <img src={user} alt="avatar" className={styles.avatar} />
-          <div className={styles.username}>João da ONG</div>
           <div className={styles.stats}>
+            <div className={styles.profileInfo}>
+              <div className={styles.profileHeader}>
+                <img src={user} alt="avatar" className={styles.avatar} />
+                <div className={styles.username}>
+                  {userInfo.username || "Carregando..."}
+                </div>
+                <div className={styles.email}>
+                  {userInfo.email || "Carregando..."}
+                </div>
+              </div>
+            </div>
             <div className={styles.stat}>
-              <span className={styles.number}>4</span>
+              <span className={styles.number}>6</span>
               <span className={styles.label}>Posts</span>
             </div>
             <div className={styles.stat}>
