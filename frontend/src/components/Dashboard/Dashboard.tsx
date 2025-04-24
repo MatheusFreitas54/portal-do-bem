@@ -36,7 +36,7 @@ const mockPosts: Event[] = [
   {
     id: "104",
     title: "Mutirão de Limpeza",
-    image: "https://viralatinhas.com/wp-content/uploads/2017/06/02-1.jpg",
+    image: "https://guiadoestudante.abril.com.br/wp-content/uploads/sites/4/2024/02/mutirao.jpg?quality=70&strip=info&w=1024",
     dateStart: "10 Abr",
     location: "Curitiba / PR",
     organizer: "Verde Curitiba",
@@ -77,12 +77,10 @@ const Dashboard: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.dashboard}>
-      <button
-          onClick={handleBackHome}
-          className={styles.newPost}
-        >
+      <button onClick={handleBackHome} className={styles.backButton}>
           ← Voltar à Home
         </button>
+        
         <div className={styles.header}>
           <img src={user} alt="avatar" className={styles.avatar} />
           <div className={styles.username}>João da ONG</div>
@@ -112,7 +110,6 @@ const Dashboard: React.FC = () => {
         </section>
       </div>
 
-      {/* Mostrar o formulário apenas se showForm for true */}
       {showForm && (
         <CreatePostForm
           onSubmit={handlePostSubmit}

@@ -1,24 +1,28 @@
 .container {
   width: 100vw;
   min-height: 100vh;
+  margin: 0;
+  padding: 2rem 0;        
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   background-color: #3D4953;
-  padding: 2rem;
   box-sizing: border-box;
 }
 
 .dashboard {
-  width: 100%;
+  width: 90%;      
   max-width: 1200px;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 2rem;
+  position: relative;
+  box-sizing: border-box;
 }
 
 .header {
+  margin-top: 2.5rem;
   display: grid;
   grid-template-columns: auto 1fr auto;
   grid-template-rows: auto auto;
@@ -131,4 +135,22 @@
   font-size: 1rem;
   color: #333;
   margin-top: 0.5rem;
+}
+
+.backButton {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: #d8e8fa;
+  color: #1a73e8;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.backButton:hover {
+  background-color: #c0dbf5;
 }

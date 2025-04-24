@@ -2,19 +2,25 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  overflow-x: hidden;
-  width: 120%;
+  width: 100%;
+  margin: 0 auto;
   padding: 0;
-  margin: 0;
   box-sizing: border-box;
-  margin-left: 3%;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.carouselWrapper,
+.main,
+.footer {
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .carouselWrapper {
-  width: 100%;
-  max-width: 1200px;
-  margin: 1rem auto;
-  box-sizing: border-box;
+  margin-top: 1rem;
   overflow: hidden;
 }
 
@@ -23,37 +29,12 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
   padding: 0 1rem;
-  box-sizing: border-box;
 }
 
 .eventsSection {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  overflow: hidden;
-}
-
-.eventsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1rem;
-  overflow-y: auto;
-  padding-bottom: 1rem;
-}
-
-.recentSection {
-  display: flex;
-  flex-direction: column;
-}
-
-.recentGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
 }
 
 .sectionTitle {
@@ -63,24 +44,30 @@
   text-align: center;
 }
 
-.footer {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto 1rem;
-  padding: 1rem;
-  text-align: center;
-  box-sizing: border-box;
+.eventsGrid {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0 1rem;
+  scroll-behavior: smooth;
 }
 
-.logoutButton {
-  display: inline-block;
-  margin-top: 1rem;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.eventsGrid > * {
+  flex: 0 0 auto;
+}
+
+.eventsGrid::-webkit-scrollbar {
+  height: 6px;
+}
+.eventsGrid::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.recentSection {
+  display: flex;
+  flex-direction: column;
 }
 
 .recentGrid {
@@ -88,4 +75,18 @@
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
   margin-top: 1rem;
+}
+
+.footer {
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.logoutButton {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }

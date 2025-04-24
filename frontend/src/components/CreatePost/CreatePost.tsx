@@ -1,38 +1,60 @@
 import React, { FormEvent, ChangeEvent } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import styles from "./CreatePost.module.css";
 
-interface CreatePostFormProps {
-  onSubmit: (formData: {
-    title: string;
-    type: string;
-    banner: File | null;
-    description: string;
-  }) => void;
-  onCancel?: () => void;
+interface CreatePostProps {
+  onCancel: () => void;
+  onSubmit: (data: any) => void;
 }
 
-const CreatePostForm: React.FC<CreatePostFormProps> = ({
-  onSubmit,
-  onCancel,
-}) => {
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const target = e.currentTarget;
-    const formData = new FormData(target);
+const CreatePost: React.FC<CreatePostProps> = ({ onCancel, onSubmit }) => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("access_token") || "";
+  const userId = localStorage.getItem("user_id") || "";
 
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
+    const title = formData.get("title") as string;
+    const type = formData.get("type") as string;
+    const description = formData.get("description") as string;
     const rawBanner = formData.get("banner");
     const bannerFile = rawBanner instanceof File ? rawBanner : null;
-  
-    onSubmit({
-      title: formData.get("title") as string,
-      type: formData.get("type") as string,
-      banner: bannerFile,
-      description: formData.get("description") as string,
-    });
+
+    const body = {
+      title,
+      content: description,
+      user_id: userId,
+    };
+
+    try {
+      const response = await axios.post<string>(
+        "http://localhost:8000/posts/",
+        body,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Post criado com ID:", response.data);
+      navigate("/posts");
+    } catch (error: any) {
+      console.error("Erro ao criar post:", error);
+      const msg =
+        error.response?.data?.detail ||
+        error.message ||
+        "Não foi possível criar o post.";
+      alert(msg);
+    }
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e)
+    // Opcional: implementar preview ou validação do arquivo
+    console.log(e.target.files);
   };
 
   return (
@@ -93,16 +115,10 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
         />
 
         <div className={styles.actions}>
-          {onCancel && (
-            <button
-              type="button"
-              className={styles.cancelBtn}
-              onClick={onCancel}
-            >
-              Cancelar
-            </button>
-          )}
-          <button type="submit" className={styles.submitBtn}>
+          <button type="button" className={styles.cancelBtn} onClick={onCancel}>
+            Cancelar
+          </button>
+          <button type="submit" className={styles.submitBtn} onClick={onSubmit}>
             Postar!
           </button>
         </div>
@@ -111,4 +127,4 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
   );
 };
 
-export default CreatePostForm;
+export default CreatePost;

@@ -20,7 +20,7 @@ const mockEvents: Event[] = [
   {
     id: "2",
     title: "Campanha de Vacinação",
-    image: "https://viralatinhas.com/wp-content/uploads/2017/06/02-1.jpg",
+    image: "https://www.icc.fiocruz.br/wp-content/uploads/2023/09/vacina.jpg",
     dateStart: "30 Jan",
     location: "São Paulo / SP",
     organizer: "Saúde SP",
@@ -94,7 +94,8 @@ const recentEvents: Event[] = [
   {
     id: "104",
     title: "Mutirão de Limpeza",
-    image: "https://viralatinhas.com/wp-content/uploads/2017/06/02-1.jpg",
+    image:
+      "https://guiadoestudante.abril.com.br/wp-content/uploads/sites/4/2024/02/mutirao.jpg?quality=70&strip=info&w=1024",
     dateStart: "10 Abr",
     location: "Curitiba / PR",
     organizer: "Verde Curitiba",
@@ -128,7 +129,6 @@ const Home: React.FC = () => {
       <div className={styles.carouselWrapper}>
         <Carousel />
       </div>
-
       <main className={styles.main}>
         <section className={styles.eventsSection}>
           <h2 className={styles.sectionTitle}>Próximos Eventos</h2>
