@@ -6,6 +6,7 @@ import EventList from "../../components/EventList/EventList";
 import { Event } from "../../components/EventCard/EventCard";
 import EventCard from "../EventCard/EventCard";
 import styles from "./Home.module.css";
+// import { Event } from "../../types/Event";  // Ajuste o caminho conforme a localização da interface Event
 
 const mockEvents: Event[] = [
   {

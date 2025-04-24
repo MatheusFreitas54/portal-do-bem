@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  mongo:
+    image: mongo:7
+    ports: [ "27017:27017" ]
+    volumes: [ "mongo_data:/data/db" ]
+
+  backend:
+    build: 
+      context: .
+      dockerfile: backend/Dockerfile.back
+    env_file: backend/.example.env
+    depends_on: [ mongo ]
+    ports: [ "8000:8000" ]
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile.front
+    depends_on: [ backend ]
+    ports: [ "5173:80" ]
+
+volumes:
+  mongo_data:
