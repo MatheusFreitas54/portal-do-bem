@@ -1,9 +1,9 @@
 export interface Event {
-   id: string;
+   _id: string;
    title: string;
    image: string;
    dateStart: string;
-   dateEnd?: string;  // `dateEnd` pode ser opcional, se não for sempre fornecido
+   dateEnd?: string;
    location: string;
    organizer: string;
 } 

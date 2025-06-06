@@ -1,126 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { storage } from "../../appwrite";
 import NavBar from "../NavBar/NavBar";
 import Carousel from "../Carousel/Carousel";
-import EventList from "../../components/EventList/EventList";
-import { Event } from "../../components/EventCard/EventCard";
-import EventCard from "../EventCard/EventCard";
 import styles from "./Home.module.css";
 
-const mockEvents: Event[] = [
-  {
-    id: "1",
-    title: "Feira de Adoção de Animais",
-    image: "https://static-cse.canva.com/blob/1534627/eventocorporativo1.jpg",
-    dateStart: "24 Jan",
-    dateEnd: "25 Jan",
-    location: "Rio de Janeiro / RJ",
-    organizer: "Vivo Rio",
-  },
-  {
-    id: "2",
-    title: "Campanha de Vacinação",
-    image: "https://www.icc.fiocruz.br/wp-content/uploads/2023/09/vacina.jpg",
-    dateStart: "30 Jan",
-    location: "São Paulo / SP",
-    organizer: "Saúde SP",
-  },
-  {
-    id: "3",
-    title: "Campanha de Vacinação",
-    image:
-      "https://www.ongsehsocial.org.br/wp-content/uploads/2022/09/eventos.jpg",
-    dateStart: "30 Jan",
-    location: "São Paulo / SP",
-    organizer: "Saúde SP",
-  },
-  {
-    id: "4",
-    title: "Campanha de Vacinação",
-    image:
-      "https://www.fraternidadesemfronteiras.org.br/wp-content/uploads/2022/10/Malawi_refeicoes.jpeg",
-    dateStart: "30 Jan",
-    location: "São Paulo / SP",
-    organizer: "Saúde SP",
-  },
-  {
-    id: "5",
-    title: "Campanha de Vacinação",
-    image:
-      "https://lirp.cdn-website.com/9bf456c1/dms3rep/multi/opt/Eventos-para-ongs-feiras-300x200-640w.jpg",
-    dateStart: "30 Jan",
-    location: "São Paulo / SP",
-    organizer: "Saúde SP",
-  },
-  {
-    id: "6",
-    title: "Campanha de Vacinação",
-    image:
-      "https://lirp.cdn-website.com/9bf456c1/dms3rep/multi/opt/Eventos-para-ongs-feiras-300x200-640w.jpg",
-    dateStart: "30 Jan",
-    location: "São Paulo / SP",
-    organizer: "Saúde SP",
-  },
-];
+type Post = {
+  _id: string;
+  title: string;
+  content: string;
+  user_id: string;
+};
 
-const recentEvents: Event[] = [
-  {
-    id: "101",
-    title: "Arrecadação de Roupas",
-    image:
-      "https://lirp.cdn-website.com/9bf456c1/dms3rep/multi/opt/Eventos-para-ongs-feiras-300x200-640w.jpg",
-    dateStart: "05 Abr",
-    location: "Belo Horizonte / MG",
-    organizer: "Ajuda BH",
-  },
-  {
-    id: "102",
-    title: "Mutirão de Limpeza",
-    image:
-      "https://www.fraternidadesemfronteiras.org.br/wp-content/uploads/2022/10/Malawi_refeicoes.jpeg",
-    dateStart: "10 Abr",
-    location: "Curitiba / PR",
-    organizer: "Verde Curitiba",
-  },
-  {
-    id: "103",
-    title: "Mutirão de Limpeza",
-    image:
-      "https://www.ongsehsocial.org.br/wp-content/uploads/2022/09/eventos.jpg",
-    dateStart: "10 Abr",
-    location: "Curitiba / PR",
-    organizer: "Verde Curitiba",
-  },
-  {
-    id: "104",
-    title: "Mutirão de Limpeza",
-    image:
-      "https://guiadoestudante.abril.com.br/wp-content/uploads/sites/4/2024/02/mutirao.jpg?quality=70&strip=info&w=1024",
-    dateStart: "10 Abr",
-    location: "Curitiba / PR",
-    organizer: "Verde Curitiba",
-  },
-  {
-    id: "105",
-    title: "Mutirão de Limpeza",
-    image: "https://static-cse.canva.com/blob/1534627/eventocorporativo1.jpg",
-    dateStart: "10 Abr",
-    location: "Curitiba / PR",
-    organizer: "Verde Curitiba",
-  },
-  {
-    id: "106",
-    title: "Mutirão de Limpeza",
-    image: "https://static-cse.canva.com/blob/1534627/eventocorporativo1.jpg",
-    dateStart: "10 Abr",
-    location: "Curitiba / PR",
-    organizer: "Verde Curitiba",
-  },
-];
+const bucketId = import.meta.env.VITE_APPWRITE_BUCKET_ID || "";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const handleLogout = () => navigate("/");
+
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get<Post[]>("http://localhost:8000/api/posts/")
+      .then(res => setPosts(res.data))
+      .catch(err => console.error("Erro ao buscar posts:", err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const featured = posts.slice(0, 5);
+  const recent = posts.slice(5);
+
+  const getImageUrl = (title: string) => {
+    const sanitizedTitle = title.trim().replace(/\s+/g, "_").toLowerCase();
+    return storage.getFileDownload(bucketId, `${sanitizedTitle}.jpg`);
+  };
 
   return (
     <div className={styles.container}>
@@ -129,21 +45,61 @@ const Home: React.FC = () => {
       <div className={styles.carouselWrapper}>
         <Carousel />
       </div>
+
       <main className={styles.main}>
         <section className={styles.eventsSection}>
-          <h2 className={styles.sectionTitle}>Próximos Eventos</h2>
-          <div className={styles.eventsGrid}>
-            <EventList events={mockEvents} />
-          </div>
+          <h2 className={styles.sectionTitle}>Posts em Destaque</h2>
+          {loading ? (
+            <p>Carregando...</p>
+          ) : featured.length === 0 ? (
+            <p>Nenhum post encontrado.</p>
+          ) : (
+            <div className={styles.eventsGrid}>
+              {featured.map(post => (
+                <div key={post._id} className={styles.card}>
+                  <img
+                    src={getImageUrl(post.title)}
+                    alt={post.title}
+                    className={styles.cardImage}
+                  />
+                  <div className={styles.cardContent}>
+                    <h3 className={styles.cardTitle}>{post.title}</h3>
+                    <p className={styles.cardDescription}>{post.content}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
 
+        {/* Grid responsivo */}
         <section className={styles.recentSection}>
-          <h2 className={styles.sectionTitle}>Eventos Recentemente Criados</h2>
-          <div className={styles.recentGrid}>
-            {recentEvents.map((ev) => (
-              <EventCard key={ev.id} event={ev} />
-            ))}
-          </div>
+          <h2 className={styles.sectionTitle}>Outros Posts</h2>
+          {loading ? (
+            <p>Carregando...</p>
+          ) : recent.length === 0 ? (
+            <p>Nenhum post encontrado.</p>
+          ) : (
+            <div className={styles.recentGrid}>
+              {recent.map(post => (
+                <div key={post._id} className={styles.card}>
+                  <img
+                    src={getImageUrl(post.title)}
+                    alt={post.title}
+                    className={styles.cardImage}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src =
+                        "https://via.placeholder.com/300x200.png?text=Sem+Imagem";
+                    }}
+                  />
+                  <div className={styles.cardContent}>
+                    <h3 className={styles.cardTitle}>{post.title}</h3>
+                    <p className={styles.cardDescription}>{post.content}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
       </main>
 

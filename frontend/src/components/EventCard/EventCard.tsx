@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./EventCard.module.css";
 
 export interface Event {
-  id: string;
+  _id: string;
   title: string;
   image: string;
   dateStart: string;

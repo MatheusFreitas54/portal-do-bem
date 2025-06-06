@@ -94,3 +94,40 @@
   font-size: 1rem;
   cursor: pointer;
 }
+
+.previewWrapper {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.previewImage {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.cancelBtn {
+  background: transparent;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.submitBtn {
+  background-color: #1a73e8;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+}

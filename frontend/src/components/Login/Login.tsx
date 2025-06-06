@@ -8,6 +8,12 @@ import { FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
 
 const AUTH_URL = "http://localhost:8000/api/auth/token/";
 
+interface MeResponse {
+  _id: string;
+  username: string;
+  email: string;
+}
+
 const Login: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -35,12 +41,16 @@ const Login: React.FC = () => {
         },
       });
 
-      const { access_token, token_type } = response.data;
+      const { access_token } = response.data;
       localStorage.setItem("token", access_token);
+
       axios.defaults.headers.common[
         "Authorization"
-      ] = `${token_type} ${access_token}`;
+      ] = `${"bearer"} ${access_token}`;
 
+      const meResp = await axios.get<MeResponse> ("http://localhost:8000/api/users/me/");
+      console.log(meResp.data)
+      localStorage.setItem("user_id", meResp.data._id);
       navigate("/home");
     } catch (err: any) {
       console.error("Erro ao efetuar login:", err);
