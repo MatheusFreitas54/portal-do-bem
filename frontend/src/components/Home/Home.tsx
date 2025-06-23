@@ -2,22 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { storage } from "../../appwrite";
-import NavBar from "../NavBar/NavBar";
 import Carousel from "../Carousel/Carousel";
 import styles from "./Home.module.css";
+import { Post } from "../../types/Post";
 
-type Post = {
-  _id: string;
-  title: string;
-  content: string;
-  user_id: string;
-};
+
 
 const bucketId = import.meta.env.VITE_APPWRITE_BUCKET_ID || "";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  const handleLogout = () => navigate("/");
+  
 
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
@@ -33,15 +28,12 @@ const Home: React.FC = () => {
   const featured = posts.slice(0, 5);
   const recent = posts.slice(5);
 
-  const getImageUrl = (title: string) => {
-    const sanitizedTitle = title.trim().replace(/\s+/g, "_").toLowerCase();
-    return storage.getFileDownload(bucketId, `${sanitizedTitle}.jpg`);
+  const getImageUrl = (post: Post) => {
+    return storage.getFileDownload(bucketId, `${post._id}`);
   };
 
   return (
-    <div className={styles.container}>
-      <NavBar />
-
+    <>
       <div className={styles.carouselWrapper}>
         <Carousel />
       </div>
@@ -56,15 +48,14 @@ const Home: React.FC = () => {
           ) : (
             <div className={styles.eventsGrid}>
               {featured.map(post => (
-                <div key={post._id} className={styles.card}>
+                <div key={post._id} className={styles.card} onClick={() => navigate(`/post/${post._id}`)}>
                   <img
-                    src={getImageUrl(post.title)}
+                    src={getImageUrl(post)}
                     alt={post.title}
                     className={styles.cardImage}
                   />
                   <div className={styles.cardContent}>
                     <h3 className={styles.cardTitle}>{post.title}</h3>
-                    <p className={styles.cardDescription}>{post.content}</p>
                   </div>
                 </div>
               ))}
@@ -73,7 +64,7 @@ const Home: React.FC = () => {
         </section>
 
         {/* Grid responsivo */}
-        <section className={styles.recentSection}>
+        {/* <section className={styles.recentSection}>
           <h2 className={styles.sectionTitle}>Outros Posts</h2>
           {loading ? (
             <p>Carregando...</p>
@@ -100,15 +91,9 @@ const Home: React.FC = () => {
               ))}
             </div>
           )}
-        </section>
+        </section> */}
       </main>
-
-      <footer className={styles.footer}>
-        <button onClick={handleLogout} className={styles.logoutButton}>
-          Sair
-        </button>
-      </footer>
-    </div>
+    </>
   );
 };
 

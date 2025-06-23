@@ -25,8 +25,11 @@ const NavBar: React.FC = () => {
     navigate("/dashboard");
   };
 
+  const handleLogout = () => navigate("/");
+
   return (
     <nav className={styles.navBar}>
+      
       <div className={styles.leftSection}>
         <form onSubmit={handleSearch} className={styles.searchForm}>
           <input
@@ -38,6 +41,11 @@ const NavBar: React.FC = () => {
           />
         </form>
       </div>
+
+      <button onClick={handleLogout} className={styles.logoutButton}>
+          Sair
+      </button>
+
       <div className={styles.rightSection}>
         <button onClick={() => setShowForm(true)} className={styles.newPostButton}>
           Nova Postagem
@@ -48,6 +56,7 @@ const NavBar: React.FC = () => {
           title="Meu Dashboard"
         />
       </div>
+      
       {showForm && (
         <CreatePostForm
           onSubmit={handlePostSubmit}

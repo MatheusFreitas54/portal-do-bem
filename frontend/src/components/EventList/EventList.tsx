@@ -1,5 +1,5 @@
 import React from "react";
-import EventCard, { Event } from "../EventCard/EventCard";  
+import EventCard, { Event } from "../PostCard/PostCard";  
 import styles from "./EventList.module.css";
 
 interface Props {

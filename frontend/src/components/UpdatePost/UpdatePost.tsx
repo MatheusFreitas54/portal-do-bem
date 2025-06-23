@@ -2,30 +2,27 @@ import React, { FormEvent, ChangeEvent, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { storage } from "../../appwrite";
-import styles from "./CreatePost.module.css";
+import styles from "./UpdatePost.module.css";
 import RichTextEditor from "../RichTextEditor/RichTextEditor";
 import { CustomElement } from "../RichTextEditor/editor.types";
-import { PostCreate } from "../../types/Post";
+import { Post } from "../../types/Post";
 
-interface CreatePostProps {
+interface UpdatePostProps {
   onCancel: () => void;
-  onSubmit: (data: any) => void;
+  onSubmit: (data: Post) => void;
+  toUpdate: Post;
 }
 
 const bucketId = import.meta.env.VITE_APPWRITE_BUCKET_ID || "";
 
-const CreatePost: React.FC<CreatePostProps> = ({ onCancel }) => {
+const UpdatePost: React.FC<UpdatePostProps> = ({ onCancel, onSubmit, toUpdate }) => {
   const navigate = useNavigate();
   const userId = localStorage.getItem("user_id") || "";
   const token = localStorage.getItem("token") || "";
   const [bannerFile, setBannerFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [editorValue, setEditorValue] = useState<CustomElement[]>([
-  {
-    type: 'paragraph',
-    align: 'left',
-    children: [{ text: '' }],
-  },]);
+  const [editorValue, setEditorValue] = useState<CustomElement[]>(toUpdate.content);
+  const [toUpdateCopy, setToUpdateCopy] = useState({...toUpdate});
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -35,58 +32,13 @@ const CreatePost: React.FC<CreatePostProps> = ({ onCancel }) => {
     }
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-
-    const title = formData.get("title") as string;
-    const description = formData.get("description") as string;
-
-    const body: PostCreate = {
-      title,
-      content: description,
-      user_id: userId,
-    };
-
-    try {
-      const response = await axios.post<{ id: string }>(
-        "http://localhost:8000/api/posts/",
-        body,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-          },
-        }
-      );
-      const postId = response.data;
-      console.log("Post criado com ID:", postId);
-
-      if (bannerFile) {
-        const filename = `${postId}`;
-
-        const uploadResponse = await storage.createFile(
-          bucketId,
-          filename,
-          bannerFile
-        );
-        console.log("Upload realizado:", uploadResponse);
-      }
-
-      navigate("/home");
-    } catch (error: any) {
-      console.error("Erro ao criar post:", error);
-      const msg =
-        error.response?.data?.detail ||
-        error.message ||
-        "Não foi possível criar o post.";
-      alert(msg);
-    }
-  };
-
   return (
     <div className={styles.overlay}>
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <form className={styles.form} onSubmit={(ev) => {
+        ev.preventDefault();
+        
+        onSubmit({...toUpdateCopy, content: editorValue});
+        }}>
         <h2 className={styles.heading}>Criação de Postagem</h2>
 
         <label className={styles.label} htmlFor='title'>
@@ -98,6 +50,8 @@ const CreatePost: React.FC<CreatePostProps> = ({ onCancel }) => {
           type='text'
           className={styles.input}
           placeholder='Digite o nome...'
+          value={toUpdateCopy.title}
+          onChange={(ev) => setToUpdateCopy({...toUpdateCopy, title: ev.target.value})}
           required
         />
 
@@ -110,7 +64,6 @@ const CreatePost: React.FC<CreatePostProps> = ({ onCancel }) => {
           type='text'
           className={styles.input}
           placeholder='Digite o tipo...'
-          required
         />
 
         <label className={styles.label} htmlFor='banner'>
@@ -124,7 +77,6 @@ const CreatePost: React.FC<CreatePostProps> = ({ onCancel }) => {
             accept='image/*'
             className={styles.fileInput}
             onChange={handleFileChange}
-            required
           />
           <span className={styles.fileLabel}>Importe um Arquivo ⬆️</span>
         </div>
@@ -143,23 +95,12 @@ const CreatePost: React.FC<CreatePostProps> = ({ onCancel }) => {
           Descrição
         </label>
         <RichTextEditor value={editorValue} setValue={setEditorValue} />
-        <textarea
-          id='description'
-          name='description'
-          style={{display: "none"}}
-          placeholder='Digite uma descrição...'
-          rows={5}
-          value={JSON.stringify(editorValue)}
-          required
-          onChange={() => {}}
-        />
-
         <div className={styles.actions}>
           <button type='button' className={styles.cancelBtn} onClick={onCancel}>
             Cancelar
           </button>
           <button type='submit' className={styles.submitBtn}>
-            Postar!
+            Atualizar!
           </button>
         </div>
       </form>
@@ -167,4 +108,4 @@ const CreatePost: React.FC<CreatePostProps> = ({ onCancel }) => {
   );
 };
 
-export default CreatePost;
+export default UpdatePost;

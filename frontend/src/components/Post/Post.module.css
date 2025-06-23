@@ -1,0 +1,16 @@
+.article {
+    font-family: 'Segoe UI', sans-serif;
+    max-width: 800px;
+    margin: auto;
+    padding: 16px;
+}
+
+.postBanner {
+    width: 100%;
+    height: auto;
+    margin-bottom: 16px;
+}
+
+.postContent {
+    line-height: 1.6;
+}

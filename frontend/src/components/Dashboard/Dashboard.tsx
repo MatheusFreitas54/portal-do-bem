@@ -3,16 +3,21 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect, ChangeEvent } from "react";
 import styles from "./Dashboard.module.css";
 import userPlaceholder from "../../assets/user.png";
-import EventCard, { Event } from "../EventCard/EventCard";
+import PostCard from "../PostCard/PostCard";
 import CreatePostForm from "../CreatePost/CreatePost";
+import UpdatePostForm from "../UpdatePost/UpdatePost";
 import axios from "axios";
 import { storage } from "../../appwrite";
+import api from "../../api";
+import { Post } from "../../types/Post";
 
 const bucketId = import.meta.env.VITE_APPWRITE_BUCKET_ID || "";
 const API_URL = "http://localhost:8000/api";
 
 const Dashboard: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
+  const [showUpdateForm, setShowUpdateForm] = useState(false);
+  const [toUpdatePost, setToUpdatePost] = useState<Post>();
 
   const [userInfo, setUserInfo] = useState<{
     username: string;
@@ -26,7 +31,7 @@ const Dashboard: React.FC = () => {
 
   const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
 
-  const [userPosts, setUserPosts] = useState<Event[]>([]);
+  const [userPosts, setUserPosts] = useState<Post[]>([]);
   const navigate = useNavigate();
 
   const fetchProfileImageUrl = async (username: string) => {
@@ -99,8 +104,7 @@ const Dashboard: React.FC = () => {
         await fetchProfileImageUrl(username);
 
         axios
-          .get(`${API_URL}/posts/`, {
-            params: { user_id: _id },
+          .get(`${API_URL}/posts/user/${_id}`, {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then((postRes) => {
@@ -135,6 +139,31 @@ const Dashboard: React.FC = () => {
 
   const handlePostCancel = () => setShowForm(false);
   const handleBackHome = () => navigate("/home");
+  const handlePostUpdateCancel = () => {
+    setToUpdatePost(undefined);
+    setShowUpdateForm(false);
+  }
+  const handleShowUpdateForm = (post: Post) => {
+    setToUpdatePost({...post, content: JSON.parse(post.content as any)});
+    setShowUpdateForm(true);
+  };
+  const handleDeletePost = async (post: Post) => {
+    const success = await api.post.deletePostbyID(post._id);
+    if(!success) {
+      alert("Não foi possível deletar o post");
+      return;
+    }
+    setUserPosts(userPosts.filter((item) => item._id !== post._id));
+  }
+  const handlePostUpdateSubmit = async (post: Post) => {
+    const success = await api.post.updatePost(post);
+    if(!success) {
+      alert("Não foi possível atualizar o post");
+      return;
+    }
+    alert("Post atualizado com sucesso");
+  }
+
 
   return (
     <div className={styles.container}>
@@ -203,7 +232,26 @@ const Dashboard: React.FC = () => {
             {userPosts.length === 0 ? (
               <p>Você ainda não tem posts.</p>
             ) : (
-              userPosts.map((post) => <EventCard key={post._id} event={post} />)
+              userPosts.map((post) => <div key={post._id} style={{position: "relative"}}>
+                <PostCard  post={(post as any)} onClick={() => handleShowUpdateForm(post)} />
+                <button
+                  style={{
+                    marginLeft: "0.5rem",
+                    backgroundColor: "#e74c3c",
+                    color: "#fff",
+                    border: "none",
+                    padding: "0.3rem 0.6rem",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    position: "absolute",
+                    top: 8,
+                    right: 8,
+                  }}
+                  onClick={() => handleDeletePost(post)}
+                >
+                  Excluir Post
+                </button>
+              </div>)
             )}
           </div>
         </section>
@@ -213,6 +261,14 @@ const Dashboard: React.FC = () => {
         <CreatePostForm
           onSubmit={handlePostSubmit}
           onCancel={handlePostCancel}
+        />
+      )}
+
+      {showUpdateForm && toUpdatePost && (
+        <UpdatePostForm
+          onSubmit={handlePostUpdateSubmit}
+          onCancel={handlePostUpdateCancel}
+          toUpdate={toUpdatePost}
         />
       )}
     </div>

@@ -8,5 +8,7 @@ class Post(BaseModel):
     user_id: PyObjectId
 
 
-class PostInDB(MongoBaseModel, Post):
-    pass
+class PostInDB(MongoBaseModel):
+    title: str
+    content: str
+    user_id: PyObjectId

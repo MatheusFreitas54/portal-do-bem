@@ -8,6 +8,9 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --navbar-height: 60px;
+  --navbar-padding-y: 20px;
 }
 
 body {

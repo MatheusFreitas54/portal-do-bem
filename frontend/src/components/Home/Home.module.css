@@ -20,7 +20,6 @@
 }
 
 .carouselWrapper {
-  margin-top: 1rem;
   overflow: hidden;
 }
 
@@ -82,15 +81,6 @@
   text-align: center;
 }
 
-.logoutButton {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
 .card {
   background-color: #ffffff;
   border: 1px solid #ddd;
@@ -106,6 +96,7 @@
 .card:hover {
   transform: translateY(-4px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
 }
 
 .cardImage {
